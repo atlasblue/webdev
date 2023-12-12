@@ -4,11 +4,6 @@
 # For CentOS 7.0 #
 #================#
 
-sudo systemctl stop firewalld
-sudo systemctl disable firewalld
-sudo setenforce 0
-sed -i s\/^SELINUX=.*$\/SELINUX=disabled\/ \/etc\/selinux\/config
-
 
 ######## CONFIG ##########
 
@@ -29,7 +24,10 @@ rpm -Uvh http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0
 rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
 
 # Installation
-yum install rsync nginx php56w-fpm php56w-gd php56w-mbstring php56w-pecl-xdebug php56w-pgsql php56w-bcmath php56w-opcache php56w-mcrypt php56w wget -y
+yum install rsync nginx redis php56w-fpm php56w-gd php56w-mbstring php56w-pecl-xdebug php56w-pgsql php56w-bcmath php56w-opcache php56w-mcrypt php56w wget -y
+
+#Configuration
+su - postgres -c /usr/pgsql-9.3/bin/initdb
 
 #php-fpm configuration
 sed -i "s@;date.timezone =@date.timezone = $timezone@g" /etc/php.ini
@@ -44,13 +42,13 @@ sed -i "s@user = apache@user = $user@g" /etc/php-fpm.d/www.conf
 sed -i "s@group = apache@group = $user@g" /etc/php-fpm.d/www.conf
 sed -i "s@group = apache@group = $user@g" /etc/php-fpm.d/www.conf
 sed -i "s@SELINUX=enforcing@SELINUX=disabled@g" /etc/sysconfig/selinux
-
-mkdir -p $serverRoot
+systemctl stop firewalld
+systemctl disable firewalld
+setenforce 0
 
 echo "
 <?php
-echo '<p><span style="font-size:36px"><span style="font-family:Arial,Helvetica,sans-serif"><strong>Welcome to the Development environment</strong></span></span></p><p>&nbsp;</p>
-echo "Server IP is: <b>$_SERVER['SERVER_ADDR']</b>";
+echo '<h1>Server configured successfully!</h1>';
 " > $serverRoot/$router
 
 chown $user /home/$user -R
@@ -75,11 +73,20 @@ server {
 }
 " > /etc/nginx/conf.d/server.conf
 
+#firewall
+firewall-cmd --permanent --add-port=22/tcp
+firewall-cmd --permanent --add-port=80/tcp
+firewall-cmd --permanent --add-port=443/tcp
+systemctl restart firewalld
+
 # start at boot
 systemctl enable php-fpm
+systemctl enable redis
+systemctl enable postgresql-9.3
 systemctl enable nginx
 
 # run them
 systemctl start php-fpm
+systemctl start redis
+systemctl start postgresql-9.3
 systemctl start nginx
-
