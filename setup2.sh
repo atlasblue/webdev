@@ -14,7 +14,7 @@ sed -i s\/^SELINUX=.*$\/SELINUX=disabled\/ \/etc\/selinux\/config
 
 user="user"
 router="index.php"
-serverRoot="/home/user/server/public"
+serverRoot="/usr/share/nginx/html"
 domain="localhost"
 timezone="America/Phoenix"
 
@@ -49,7 +49,8 @@ mkdir -p $serverRoot
 
 echo "
 <?php
-echo '<h1>Server configured successfully!</h1>';
+echo '<p><span style="font-size:36px"><span style="font-family:Arial,Helvetica,sans-serif"><strong>Welcome to the Development environment</strong></span></span></p><p>&nbsp;</p>
+echo "Server IP is: <b>$_SERVER['SERVER_ADDR']</b>";
 " > $serverRoot/$router
 
 chown $user /home/$user -R
