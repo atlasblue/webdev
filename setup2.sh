@@ -57,7 +57,7 @@ echo "Server IP Address is : $ip_server";
 ?> 
 <p><img src="dev.png" /></p>
 " > $serverRoot/$router
-wget https://raw.githubusercontent.com/atlasblue/webdev/master/dev.png
+wget https://raw.githubusercontent.com/atlasblue/webdev/master/dev.png -P $serverRoot
 chown $user /home/$user -R
 chgrp $user /home/$user -R
 
