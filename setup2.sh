@@ -24,7 +24,7 @@ rpm -Uvh http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0
 rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
 
 # Installation
-yum install rsync nginx redis php56w-fpm php56w-gd php56w-mbstring php56w-pecl-xdebug php56w-pgsql php56w-bcmath php56w-opcache php56w-mcrypt php56w wget -y
+yum install rsync nginx php56w-fpm php56w-gd php56w-mbstring php56w-pecl-xdebug php56w-pgsql php56w-bcmath php56w-opcache php56w-mcrypt php56w wget -y
 
 #Configuration
 su - postgres -c /usr/pgsql-9.3/bin/initdb
@@ -73,20 +73,11 @@ server {
 }
 " > /etc/nginx/conf.d/server.conf
 
-#firewall
-firewall-cmd --permanent --add-port=22/tcp
-firewall-cmd --permanent --add-port=80/tcp
-firewall-cmd --permanent --add-port=443/tcp
-systemctl restart firewalld
 
 # start at boot
 systemctl enable php-fpm
-systemctl enable redis
-systemctl enable postgresql-9.3
 systemctl enable nginx
 
 # run them
 systemctl start php-fpm
-systemctl start redis
-systemctl start postgresql-9.3
 systemctl start nginx
