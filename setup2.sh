@@ -50,7 +50,7 @@ echo "
 <?php
 echo '<h1>Server configured successfully!</h1>';
 " > $serverRoot/$router
-
+curl -OL https://github.com/atlasblue/webdev/blob/e8ff82fa35f6989d1ff1aef31e8503595c11171b/dev.png
 chown $user /home/$user -R
 chgrp $user /home/$user -R
 
