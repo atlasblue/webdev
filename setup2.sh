@@ -47,10 +47,17 @@ systemctl disable firewalld
 setenforce 0
 
 echo "
+<p>&nbsp;</p>
+<p><span style="font-size:36px"><span style="font-family:Arial,Helvetica,sans-serif"><strong>Welcome to the Development environment</strong></span></span></p>
+<p>&nbsp;</p>
 <?php
-echo '<h1>Server configured successfully!</h1>';
+$ip_server = $_SERVER['SERVER_ADDR']; 
+echo '<span style="font-size:36px"><span style="font-family:Arial,Helvetica,sans-serif"><strong>';
+echo "Server IP Address is : $ip_server"; 
+?> 
+<p><img src="dev.png" /></p>
 " > $serverRoot/$router
-curl -OL https://github.com/atlasblue/webdev/blob/e8ff82fa35f6989d1ff1aef31e8503595c11171b/dev.png
+wget https://raw.githubusercontent.com/atlasblue/webdev/master/dev.png
 chown $user /home/$user -R
 chgrp $user /home/$user -R
 
