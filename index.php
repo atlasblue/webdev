@@ -5,6 +5,6 @@
 $ip_server = $_SERVER['SERVER_ADDR']; 
 echo '<span style="font-size:36px"><span style="font-family:Arial,Helvetica,sans-serif"><strong>';
 echo "Server IP Address is: $ip_server" ;
-echo "<p></p>This is Webdev" ;
+echo "<p></p>This is WebDev" ;
 ?> 
 <p><img src="dev.png" /></p>
